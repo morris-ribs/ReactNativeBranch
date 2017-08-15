@@ -1,9 +1,12 @@
 import firebase from 'firebase';
 
-import { EMAIL_CHANGED, PASSWORD_CHANGED, 
-  LOGIN_USER_SUCCESS, LOGIN_USER_FAIL 
-} 
-from './types';
+import { 
+  EMAIL_CHANGED, 
+  PASSWORD_CHANGED, 
+  LOGIN_USER_SUCCESS, 
+  LOGIN_USER_FAIL, 
+  LOGIN_USER 
+} from './types';
 
 export const emailChanged = (text) => {
   return {
@@ -22,6 +25,8 @@ export const passwordChanged = (text) => {
 export const loginUser = ({email, password}) => {
   // returns a function to be called by redux-thunk
   return (dispatch) => {
+    dispatch({type: LOGIN_USER});
+
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(user => loginUserSuccess(dispatch, user))
     .catch(() => {

@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Button, Card, CardSection, Input } from './common';
+import { Button, Card, CardSection, Input, Spinner } from './common';
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -11,7 +11,6 @@ class LoginForm extends Component {
   }
 
   onPasswordChange(text) {
-    if (text === 'd') alert('changed');
     this.props.passwordChanged(text);
   }
 
@@ -21,12 +20,13 @@ class LoginForm extends Component {
   }
   
   renderButton() {
-    return  (<Button onPress={this.onButtonPress.bind(this)}>
+    const { loading } = this.props;
+    return  (
+      loading ? 
+      <Spinner size="large" />
+        :<Button onPress={this.onButtonPress.bind(this)}>
           Log In
-      </Button>); /*this.state.loading ? 
-      <Spinner size="small" />
-    :*/
-     
+      </Button>);     
   }
   
   render() {
@@ -69,8 +69,8 @@ const styles = {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { email, password, error } = auth;
-  return { email, password, error };
+  const { email, password, error, loading } = auth;
+  return { email, password, error, loading };
 };
 
 export default connect(mapStateToProps, 
